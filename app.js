@@ -25,7 +25,10 @@ collect();
 setInterval(collect, 60000 * 10);
 
 app.get("/", (req, res) => res.type('html').send("ok"));
-app.get("/prox", (req, res) => res.type('json').send(_prox));
+app.get("/prox", function(req, res){
+  res.type('json').send(_prox);
+  _prox = {};
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
