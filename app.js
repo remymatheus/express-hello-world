@@ -11,7 +11,7 @@ function collect(){
     
     _d.every(function(e, i){
       _prox[e.ip+":"+e.port] = {
-        update: Date.now();
+        update: Date.now()
       }
       return true;
     });
