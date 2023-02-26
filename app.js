@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 var request = require('request');
 
+//collect
 var _prox = {};
 
 function collect(){
