@@ -1,34 +1,23 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const port = process.env.PORT || 3001;
-var request = require('request');
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+const cors = require('cors');
 
-//collect
-var _prox = {};
+app.use(cors());
 
-function collect(){
-  request("https://raw.githubusercontent.com/mertguvencli/http-proxy-list/main/proxy-list/data.json", function (error, res, body) {
-    var _d = JSON.parse(body);
-    
-    _d.every(function(e, i){
-      _prox[e.ip+":"+e.port] = {
-        update: Date.now()
-      }
-      return true;
-    });
-
-  });
-}
-
-collect();
-
-setInterval(collect, 60000 * 10);
-
-app.get("/", (req, res) => res.type('html').send("ok"));
-app.get("/prox", function(req, res){
-  res.type('json').send(_prox);
-  _prox = {};
+app.get('/', (req, res) => {
+  res.send('OK');
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+io.on('connection', (socket) => {
+  console.log('Un usuario se ha conectado');
 
+  socket.on('disconnect', () => {
+    console.log('Un usuario se ha desconectado');
+  });
+});
+
+http.listen(3000, () => {
+  console.log('Servidor escuchando en el puerto 3000');
+});
